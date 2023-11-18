@@ -1,9 +1,7 @@
 #include "Readtxt.h"
 #include <fstream>
 #include <iostream>
-#include <vector>
 #include <sstream>
-#include <algorithm>
 
 Readtxt::Readtxt() : head(nullptr), tail(nullptr) {}
 
@@ -11,11 +9,15 @@ Readtxt::Readtxt(std::string filename) : filename_(std::move(filename)), head(nu
     loadFromFile();
 }
 
-std::list<std::pair<std::string, std::string>> Readtxt::getKeys() const {
-    std::list<std::pair<std::string, std::string>> keys;
+Readtxt::~Readtxt() {
+    clearMemory();
+}
+
+std::list<std::pair<std::string, std::vector<std::string>>> Readtxt::getKeys() const {
+    std::list<std::pair<std::string, std::vector<std::string>>> keys;
     Node* current = head;
     while (current) {
-        keys.emplace_back(current->key, current->linea);
+        keys.emplace_back(current->data.key, current->data.values);
         current = current->next;
     }
     return keys;
@@ -31,14 +33,18 @@ void Readtxt::loadFromFile() {
     std::string line;
     while (std::getline(file, line)) {
         if (!line.empty()) {
-            std::vector<std::string> fields;
-            std::istringstream ss(line);
-            std::string field;
+            KeyData data;
+            std::stringstream ss(line);
+            std::string item;
 
-            for (int i = 0; std::getline(ss, field, ',') && i < 1; ++i) {
-                std::string key = hashFunction(field);
-                insertData(std::move(key), std::move(line));
+            std::getline(ss, item, ',');
+            data.key = hashFunction(item);
+
+            while (std::getline(ss, item, ',')) {
+                data.values.push_back(item);
             }
+
+            insertData(data);
         }
     }
 
@@ -55,37 +61,47 @@ std::string Readtxt::hashFunction(const std::string& key) {
     return std::to_string(hashValue).substr(0, 10);
 }
 
-void Readtxt::insertData(std::string&& key, std::string&& linea) {
-    Node* newNode = new Node(std::move(key), std::move(linea));
-    if (!head) {
-        head = newNode;
-        tail = newNode;
-    } else {
-        Node* current = head;
-        while (current && current->key < newNode->key) {
-            current = current->next;
-        }
+void Readtxt::insertData(const KeyData& data) {
+    try {
+        Node* newNode = new Node();
+        newNode->data = data;
+        newNode->next = nullptr;
+        newNode->prev = tail;
 
-        if (!current) {
+        if (tail != nullptr) {
             tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
-        } else {
-            if (current->prev) {
-                current->prev->next = newNode;
-                newNode->prev = current->prev;
-            } else {
-                head = newNode;
-            }
-
-            newNode->next = current;
-            current->prev = newNode;
         }
+        tail = newNode;
+        if (head == nullptr) {
+            head = newNode;
+        }
+    } catch (const std::bad_alloc& e) {
+        clearMemory();
+        exit(EXIT_FAILURE);
     }
 }
 
-void Readtxt::sortList() {
+void Readtxt::clearMemory() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* temp = current->next;
+        delete current;
+        current = temp;
+    }
+    head = tail = nullptr;
 }
+
+void Readtxt::display() {
+    Node* temp = head;
+    while (temp != nullptr) {
+        std::cout << temp->data.key << " ";
+        temp = temp->next;
+    }
+    std::cout << std::endl;
+}
+
+
+
 
 
 

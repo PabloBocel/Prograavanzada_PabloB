@@ -1,18 +1,20 @@
 #ifndef SEARCHBYKEY_H
 #define SEARCHBYKEY_H
 
-#include "cmake-build-debug/Readtxt.h"
 #include <list>
 #include <utility>
+#include "cmake-build-debug/Readtxt.h"
 
 class SearchByKey {
 public:
-    explicit SearchByKey(Readtxt& reader);
-    std::list<std::pair<std::string, std::string>> searchByKeyPrefix(const std::string& searchTerm) const;
+    SearchByKey(Readtxt& reader);
+
+    std::list<std::pair<std::string, std::vector<std::string>>> binarySearch(const std::string& key) const;
+    std::list<std::pair<std::string, std::vector<std::string>>> searchByKeyPrefix(const std::string& searchTerm) const;
 
 private:
     Readtxt& reader_;
-    std::list<std::pair<std::string, std::string>> binarySearch(const std::string& key) const;
 };
 
-#endif
+#endif  // SEARCHBYKEY_H
+

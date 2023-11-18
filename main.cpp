@@ -70,17 +70,20 @@ int main() {
 
             std::string searchTerm;
             std::cout << "Ingrese la clave a buscar: ";
-            cin >> searchTerm;
+            std::cin >> searchTerm;
 
             auto matchingSets = searcher.searchByKeyPrefix(searchTerm);
 
             if (!matchingSets.empty()) {
                 for (const auto& set : matchingSets) {
-                    std::cout << "Clave: " << set.first << ", Valor: " << set.second << std::endl;
+                    std::cout << "Clave: " << set.first << ", Valores: ";
+                    for (const auto& value : set.second) {
+                        std::cout << value << " ";
+                    }
+                    std::cout << std::endl;
                 }
-            }
-            else {
-                std::cout << "La clave no se encontro en los datos." << std::endl;
+            } else {
+                std::cout << "La clave no se encontró en los datos." << std::endl;
             }
 
             back1:
