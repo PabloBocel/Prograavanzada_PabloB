@@ -7,7 +7,7 @@ Readtxt::Readtxt() : head(nullptr), tail(nullptr) {}
 
 Readtxt::Readtxt(std::string filename) : filename_(std::move(filename)), head(nullptr), tail(nullptr) {
     loadFromFile();
-}
+} //la primera accion que realiza desde el main
 
 Readtxt::~Readtxt() {
     clearMemory();
@@ -23,7 +23,7 @@ std::list<std::pair<std::string, std::vector<std::string>>> Readtxt::getKeys() c
     return keys;
 }
 
-void Readtxt::loadFromFile() {
+void Readtxt::loadFromFile() { //lee el archivo y crea el hash y lo mete a la lista de una vez
     std::ifstream file(filename_);
     if (!file.is_open()) {
         std::cerr << "Error: No se pudo abrir el archivo." << std::endl;
@@ -51,7 +51,7 @@ void Readtxt::loadFromFile() {
     file.close();
 }
 
-std::string Readtxt::hashFunction(const std::string& key) {
+std::string Readtxt::hashFunction(const std::string& key) { // funcion hash con numeros
     size_t commaPos = key.find(',');
     std::string substringBeforeComma = key.substr(0, commaPos);
 
@@ -61,7 +61,7 @@ std::string Readtxt::hashFunction(const std::string& key) {
     return std::to_string(hashValue).substr(0, 10);
 }
 
-void Readtxt::insertData(const KeyData& data) {
+void Readtxt::insertData(const KeyData& data) { //lista doblemente enlazada
     try {
         Node* newNode = new Node();
         newNode->data = data;
@@ -81,7 +81,7 @@ void Readtxt::insertData(const KeyData& data) {
     }
 }
 
-void Readtxt::clearMemory() {
+void Readtxt::clearMemory() { //limpiar memoria para potimizar el codigo
     Node* current = head;
     while (current != nullptr) {
         Node* temp = current->next;

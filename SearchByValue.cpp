@@ -1,17 +1,16 @@
 #include "SearchByValue.h"
 #include <iostream>
-
+// esta parte del codigo encuentra el valor que se manda y muestra todas las llaves que contienen ese valor y la cantidad
+//de estas
 SearchByValue::SearchByValue(Readtxt& reader) : reader_(reader) {}
 
 std::list<std::pair<std::string, std::vector<std::string>>> SearchByValue::searchByValue(const std::string& searchTerm) const {
     std::list<std::pair<std::string, std::vector<std::string>>> matchingPairs = sequentialSearch(reader_.getKeys(), searchTerm);
 
-    // Output all matching pairs
     std::cout << "Matching Hashes:" << std::endl;
     for (const auto& pair : matchingPairs) {
         std::cout << "Clave: " << pair.first << ", Valores: ";
 
-        // Iterar a través de los valores del vector e imprimir cada uno
         for (const auto& value : pair.second) {
             std::cout << value << " ";
         }
@@ -19,7 +18,7 @@ std::list<std::pair<std::string, std::vector<std::string>>> SearchByValue::searc
         std::cout << std::endl;
     }
 
-    // Output the number of matching pairs
+    // Muestra la cantidad de los hashes encontrados con el mismo valor
     std::cout << "Numero de Hashes encontrados: " << matchingPairs.size() << std::endl;
 
     return matchingPairs;
@@ -33,7 +32,7 @@ std::list<std::pair<std::string, std::vector<std::string>>> SearchByValue::seque
         for (const auto& value : pair.second) {
             if (value.find(searchTerm) != std::string::npos) {
                 matchingPairs.push_back(pair);
-                break;  // Break out of the inner loop once a match is found
+                break;
             }
         }
     }

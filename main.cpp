@@ -17,7 +17,7 @@ int main() {
     cout << "Considere que debe quitar las comillas de la ruta de acceso" << endl;
     cin >> fileAccess;
 
-    Readtxt reader(fileAccess);
+    Readtxt reader(fileAccess); // carga los datos con el hash y añadidos a la lista
 
     cout << "Datos cargados exitosamente desde el archivo, continue con 's'" << std::endl;
     char continiue;
@@ -43,7 +43,7 @@ int main() {
         goto cho;
     }
 
-    switch (choice) {
+    switch (choice) { //las opciones que se pueden elegir
         case 1: {
             system("cls");
             AddData addDataOption(reader);
@@ -66,7 +66,7 @@ int main() {
             break;
         }
         case 2: {
-            SearchByKey searcher(reader);
+            SearchByKey searcher(reader); //manda a buscar por llave
 
             std::string searchTerm;
             std::cout << "Ingrese la clave a buscar: ";
@@ -75,7 +75,7 @@ int main() {
             auto matchingSets = searcher.searchByKeyPrefix(searchTerm);
 
             if (!matchingSets.empty()) {
-                for (const auto& set : matchingSets) {
+                for (const auto& set : matchingSets) { //devuelve la clave y los valores
                     std::cout << "Clave: " << set.first << ", Valores: ";
                     for (const auto& value : set.second) {
                         std::cout << value << " ";
@@ -101,7 +101,7 @@ int main() {
             break;
         }
         case 3: {
-            SearchByValue searchByValueOption(reader);
+            SearchByValue searchByValueOption(reader); //manda a buscar por valor
 
             std::string searchTerm;
             std::cout << "Ingrese el valor a buscar: ";
@@ -124,7 +124,7 @@ int main() {
             break;
         }
         case 4:
-            std::cout << "Saliendo del programa." << std::endl;
+            std::cout << "Saliendo del programa." << std::endl; //sale del programa
             return 0;
         default:
             std::cout << "Opción no válida, escoja un numero correcto" << std::endl;

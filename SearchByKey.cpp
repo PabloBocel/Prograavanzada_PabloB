@@ -10,14 +10,14 @@ std::list<std::pair<std::string, std::vector<std::string>>> SearchByKey::binaryS
 
     keys.sort([](const std::pair<std::string, std::vector<std::string>>& lhs, const std::pair<std::string, std::vector<std::string>>& rhs) {
         return lhs.first < rhs.first;
-    });
+    });  //esta parte es para ordenar los hashes para poder hacer la busqueda binaria
 
     auto begin = keys.begin();
     auto end = keys.end();
 
-    std::cout << "Searching for key: " << key << std::endl;
+    std::cout << "Searching for key: " << key << std::endl; //empieza a buscar la llave
 
-    while (begin != end) {
+    while (begin != end) { // codigo de la busqueda binaria para la llave
         auto mid = std::next(begin, std::distance(begin, end) / 2);
 
         if (mid->first == key) {
@@ -47,4 +47,4 @@ std::list<std::pair<std::string, std::vector<std::string>>> SearchByKey::searchB
     std::string hashedSearchTerm = Readtxt::hashFunction(searchTerm);
 
     return binarySearch(hashedSearchTerm);
-}
+} //recibe los hashes y los envia arriba para la busqueda binaria
