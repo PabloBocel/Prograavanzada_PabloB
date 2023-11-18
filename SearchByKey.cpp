@@ -7,6 +7,11 @@ SearchByKey::SearchByKey(Readtxt& reader) : reader_(reader) {}
 std::list<std::pair<std::string, std::vector<std::string>>> SearchByKey::binarySearch(const std::string& key) const {
     std::list<std::pair<std::string, std::vector<std::string>>> matchingSets;
     auto keys = reader_.getKeys();
+
+    keys.sort([](const std::pair<std::string, std::vector<std::string>>& lhs, const std::pair<std::string, std::vector<std::string>>& rhs) {
+        return lhs.first < rhs.first;
+    });
+
     auto begin = keys.begin();
     auto end = keys.end();
 
