@@ -9,7 +9,6 @@ class AddData {
 public:
     AddData(Readtxt& reader);
 
-
     void addDataFromFile(const std::string& filename);
 
 private:

@@ -2,13 +2,10 @@
 #include "cmake-build-debug/Readtxt.h"
 #include <iostream>
 
-#include "SearchByKey.h"
-#include <iostream>
-
 SearchByKey::SearchByKey(Readtxt& reader) : reader_(reader) {}
 
-std::list<std::pair<std::string, std::string>> SearchByKey::binarySearch(const std::string& key) const {
-    std::list<std::pair<std::string, std::string>> matchingSets;
+std::list<std::pair<std::string, std::vector<std::string>>> SearchByKey::binarySearch(const std::string& key) const {
+    std::list<std::pair<std::string, std::vector<std::string>>> matchingSets;
     auto keys = reader_.getKeys();
     auto begin = keys.begin();
     auto end = keys.end();
@@ -41,8 +38,7 @@ std::list<std::pair<std::string, std::string>> SearchByKey::binarySearch(const s
     return matchingSets;
 }
 
-
-std::list<std::pair<std::string, std::string>> SearchByKey::searchByKeyPrefix(const std::string& searchTerm) const {
+std::list<std::pair<std::string, std::vector<std::string>>> SearchByKey::searchByKeyPrefix(const std::string& searchTerm) const {
     std::string hashedSearchTerm = Readtxt::hashFunction(searchTerm);
 
     return binarySearch(hashedSearchTerm);
